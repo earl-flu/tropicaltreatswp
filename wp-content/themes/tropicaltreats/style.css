@@ -576,6 +576,10 @@ header nav a {
   margin-top: 66px;
 }
 
+.menu-accordion-list li a.active {
+  color: #FB9300;
+}
+
 #offcanvasMenuCategoryLabel {
   font-size: 28px;
 }
@@ -604,6 +608,10 @@ header nav a {
   font-size: 28px !important;
   color: #000000 !important;
   background-color: transparent !important;
+}
+
+.current-menu-item a {
+  color: #FB9300;
 }
 
 .menu-accordion-list {

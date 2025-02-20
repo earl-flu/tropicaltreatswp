@@ -1,6 +1,7 @@
 <?php
 
-function tropicaltreats_theme_support(){
+function tropicaltreats_theme_support()
+{
     // Add dynamic title tag support
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
@@ -8,7 +9,8 @@ function tropicaltreats_theme_support(){
 
 add_action('after_setup_theme', 'tropicaltreats_theme_support');
 
-function tropicaltreats_menus(){
+function tropicaltreats_menus()
+{
     $locations = array(
         'primary' => "Desktop Primary Left Sidebar",
         'footer' => "Footer Menu Items"
@@ -41,7 +43,8 @@ function tropicaltreats_register_scripts()
 add_action('wp_enqueue_scripts', 'tropicaltreats_register_scripts');
 
 
-function customtheme_register_post_type() {
+function customtheme_register_post_type()
+{
     $labels = array(
         'name'               => 'Menu Items',
         'singular_name'      => 'Menu Item',
@@ -77,7 +80,8 @@ function customtheme_register_post_type() {
 add_action('init', 'customtheme_register_post_type');
 
 // Register custom taxonomy for menu categories
-function register_menu_taxonomy() {
+function register_menu_taxonomy()
+{
     $labels = array(
         'name'              => 'Menu Categories',
         'singular_name'     => 'Menu Category',
@@ -110,7 +114,8 @@ function register_menu_taxonomy() {
 add_action('init', 'register_menu_taxonomy');
 
 // Add rewrite rules
-function custom_menu_rewrite_rules() {
+function custom_menu_rewrite_rules()
+{
     add_rewrite_rule(
         'menu/([^/]+)/?$',
         'index.php?menu_category=$matches[1]',
@@ -118,3 +123,23 @@ function custom_menu_rewrite_rules() {
     );
 }
 add_action('init', 'custom_menu_rewrite_rules');
+
+// Make "/menu" navigation active
+function custom_menu_active_state($classes, $item)
+{
+    // Get current URL path
+    $current_url = $_SERVER['REQUEST_URI'];
+
+    // Check if this is the "Pets" menu item
+    if ($item->title === 'Menu') {
+        // Check if current URL starts with /pets
+        if (strpos($current_url, '/menu') === 0) {
+            // Add active class
+            $classes[] = 'current-menu-item';
+            $classes[] = 'current_page_item';
+        }
+    }
+
+    return $classes;
+}
+add_filter('nav_menu_css_class', 'custom_menu_active_state', 10, 2);
