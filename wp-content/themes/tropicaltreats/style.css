@@ -290,6 +290,7 @@ header nav a {
 
 .swiper-slide {
   width: 100%;
+  height: auto;
 }
 
 .swiper-card {
@@ -611,7 +612,7 @@ header nav a {
 }
 
 .current-menu-item a {
-  color: #FB9300;
+  color: #f6b55b;
 }
 
 .menu-accordion-list {

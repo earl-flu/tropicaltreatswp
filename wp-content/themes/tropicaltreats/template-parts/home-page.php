@@ -1,21 +1,25 @@
 <!-- Hero Section -->
+
+<?php
+/**if (have_posts()) {
+    while (have_posts()) {
+        the_post();
+        the_content();
+    }
+}*/
+?>
 <section>
     <div class="container hero-section">
         <div class="row">
             <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center order-lg-2">
-                <img class="hero-image" src="./images/filipino-food.png" alt="tropical-treats-food">
+                <?php $hero_image = get_field('hero_image'); ?>
+                <img class="hero-image" src="<?php echo esc_url($hero_image['url']); ?>" alt="hero-image">
             </div>
             <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center order-lg-1">
                 <div>
-                    <p class="hero-title">Taste of Paradise</p>
-                    <p class="hero-texas">In West Texas</p>
-                    <p class="hero-desc">Experience the vibrant taste of the Philippines with <span
-                            class="treats">Tropical
-                            Treats</span>. From savory
-                        classics like adobo to
-                        sweet delights like halo-halo, our dishes celebrate Filipino tradition, bold spices, and
-                        tropical
-                        flavors. Savor the warmth of Filipino hospitality in every bite!</p>
+                    <p class="hero-title"><?php echo get_field('main_headline') ?></p>
+                    <p class="hero-texas"><?php echo get_field('sub_headline') ?></p>
+                    <p class="hero-desc"><?php echo get_field('headline_description') ?></p>
                     <a href="">
                         <div class="btn-best-seller">
                             Order Now
@@ -38,6 +42,40 @@
         <div class="swiper">
             <!-- Additional required wrapper -->
             <div class="swiper-wrapper">
+                <?php
+                $best_sellers = new WP_Query(array(
+                    'post_type' => 'menu_item',
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'menu_tag',
+                            'field'    => 'slug',
+                            'terms'    => 'best_seller',
+                        ),
+                    ),
+                ));
+
+                if ($best_sellers->have_posts()) {
+                    while ($best_sellers->have_posts()) {
+                        $best_sellers->the_post();
+                ?>
+                        <div class="swiper-slide">
+                            <div class="swiper-card">
+                                <div class="swiper-card__img-div">
+                                    <?php the_post_thumbnail('medium', ['class' => 'swiper-card__img']); ?>
+                                </div>
+                                <div class="swiper-card__content-div">
+                                    <p class="swiper-card__title"><?php the_title(); ?></p>
+                                    <p class="swiper-card__description"><?php echo get_field('ingredients'); ?></p>
+                                    <p class="swiper-card__price"><?php echo get_field('price'); ?></p>
+                                </div>
+                                <div class="swiper-card__overlay"></div>
+                            </div>
+                        </div>
+                <?php
+                    }
+                }
+                wp_reset_postdata();
+                ?>
                 <!-- Slides -->
                 <div class="swiper-slide">
                     <div class="swiper-card">

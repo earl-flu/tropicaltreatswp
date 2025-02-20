@@ -72,6 +72,7 @@ $current_category = get_queried_object();
                                         'taxonomy' => 'menu_category',
                                         'hide_empty' => false,
                                     ));
+                                    // Add active class based on active category/taxonomy
                                     foreach ($terms as $term) {
                                         $current_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                         $term_link = get_term_link($term);

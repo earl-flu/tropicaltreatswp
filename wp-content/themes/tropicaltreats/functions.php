@@ -93,7 +93,7 @@ function register_menu_taxonomy()
         'update_item'       => 'Update Menu Category',
         'add_new_item'      => 'Add New Menu Category',
         'new_item_name'     => 'New Menu Category Name',
-        'menu_name'         => 'Categories'
+        'menu_name'         => 'Menu Categories'
     );
 
     $args = array(
@@ -113,7 +113,7 @@ function register_menu_taxonomy()
 }
 add_action('init', 'register_menu_taxonomy');
 
-// Add rewrite rules
+// Add rewrite rules for Menu Category
 function custom_menu_rewrite_rules()
 {
     add_rewrite_rule(
@@ -123,6 +123,54 @@ function custom_menu_rewrite_rules()
     );
 }
 add_action('init', 'custom_menu_rewrite_rules');
+
+// Register custom taxonomy for menu tags
+function register_menu_tags_taxonomy()
+{
+    $labels = array(
+        'name'              => 'Menu Tags',
+        'singular_name'     => 'Menu Tag',
+        'search_items'      => 'Search Menu Tags',
+        'all_items'         => 'All Menu Tags',
+        'parent_item'       => null,
+        'parent_item_colon' => null,
+        'edit_item'         => 'Edit Menu Tag',
+        'update_item'       => 'Update Menu Tag',
+        'add_new_item'      => 'Add New Menu Tag',
+        'new_item_name'     => 'New Menu Tag Name',
+        'menu_name'         => 'Menu Tags',
+        'separate_items_with_commas' => 'Separate tags with commas',
+        'add_or_remove_items'        => 'Add or remove tags',
+        'choose_from_most_used'      => 'Choose from the most used tags',
+    );
+
+    $args = array(
+        'hierarchical'      => false,  // This makes it behave like tags instead of categories
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'show_in_rest'      => true,
+        'rewrite'           => array(
+            'slug' => 'menu-tag',
+            'with_front' => false
+        )
+    );
+
+    register_taxonomy('menu_tag', 'menu_item', $args);
+}
+add_action('init', 'register_menu_tags_taxonomy');
+
+// Add rewrite rules for Menu Tags
+function custom_menu_tag_rewrite_rules()
+{
+    add_rewrite_rule(
+        'menu-tag/([^/]+)/?$',
+        'index.php?menu_tag=$matches[1]',
+        'top'
+    );
+}
+add_action('init', 'custom_menu_tag_rewrite_rules');
 
 // Make "/menu" navigation active
 function custom_menu_active_state($classes, $item)
